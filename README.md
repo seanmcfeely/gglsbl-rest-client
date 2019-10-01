@@ -15,7 +15,7 @@ The default configuration file assumes you have the service running on local hos
 - ``/etc/gglsbl-rest/config.ini``
 - ``~/<current-user>/.config/gglsbl-rest.ini``
 
-```bash
+```
 $ gglsbl-rest-client.py -h
 usage: gglsbl-rest-client.py [-h] [-d] [-rh REMOTE_HOST] [-p PORT] [-cs]
                              [-l LOOKUP_URL] [--ignore-proxy]
@@ -40,7 +40,7 @@ optional arguments:
 
 ### URL Lookup
 
-```bash
+```
 $ gglsbl-rest-client.py -l 'http://testsafebrowsing.appspot.com/apiv4/ANY_PLATFORM/SOCIAL_ENGINEERING/URL/'
 {'matches': [{'platform': 'ANY_PLATFORM',
               'threat': 'SOCIAL_ENGINEERING',
@@ -65,7 +65,7 @@ $ gglsbl-rest-client.py -l 'http://testsafebrowsing.appspot.com/apiv4/ANY_PLATFO
 
 ### Status Check
 
-```bash
+```
 $ gglsbl-rest-client.py -cs
 {'alternatives': [{'active': True,
                    'ctime': '2019-10-01T18:15:44+0000',
@@ -77,7 +77,7 @@ $ gglsbl-rest-client.py -cs
 
 OR
 
-```bash
+```
 $ gglsbl-rest-client.py 
 No arguments specified. Printing client info and service status.
 
