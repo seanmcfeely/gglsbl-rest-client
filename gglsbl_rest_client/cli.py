@@ -7,10 +7,8 @@ import argparse
 import coloredlogs
 import pprint
 
-from configparser import ConfigParser
+from gglsbl_rest_client.helpers import load_config
 from gglsbl_rest_client import GGLSBL_Rest_Service_Client as GRS_Client
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # configure logging #
 logging.basicConfig(level=logging.DEBUG,
@@ -19,55 +17,7 @@ logging.basicConfig(level=logging.DEBUG,
 logger = logging.getLogger('gglsbl-rest-client')
 coloredlogs.install(level='INFO', logger=logger)
 
-
-def load_config(profile='default', required_options=[]):
-    """Load GGLSBL-Rest configuration. Configuration files are looked for in the following locations::
-        /<python-lib-where-installed>/etc/config.ini
-        /etc/gglsbl-rest/config.ini
-        ~/<current-user>/.config/gglsbl-rest.ini
-
-    Configuration items found in later config files take presendence over earlier ones.
-
-    :param str profile: (optional) Specifiy a group or company to work with.
-    """
-    logger = logging.getLogger(__name__+".load_config")
-    config = ConfigParser()
-    config_paths = []
-    # default
-    config_paths.append(os.path.join(BASE_DIR, 'etc', 'config.ini'))
-    # global
-    config_paths.append('/etc/gglsbl-rest/config.ini')
-    # user specific
-    config_paths.append(os.path.join(os.path.expanduser("~"),'.config','gglsbl-rest.ini'))
-    finds = []
-    for cp in config_paths:
-        if os.path.exists(cp):
-            logger.debug("Found config file at {}.".format(cp))
-            finds.append(cp)
-    if not finds:
-        logger.critical("Didn't find any config files defined at these paths: {}".format(config_paths))
-        return False
-
-    config.read(finds)
-    try:
-        config[profile]
-    except KeyError:
-        logger.critical("No section named '{}' in configuration files : {}".format(profile, config_paths))
-        return False
-
-    for op in required_options:
-        if not config.has_option(profile, op):
-            logger.error("Configuation missing required options: {}".format(op))
-            return False
-        elif not config[profile][op]:
-            logger.error("Configuration option missing value: {}".format(op))
-            return False
-
-    return config[profile]
-
-
-if __name__ == '__main__':
-
+def main():
     parser = argparse.ArgumentParser(description="A client for querying MLSec gglsbl-rest Services (https://github.com/mlsecproject)")
     parser.add_argument('-d', '--debug', action="store_true", help="set logging to DEBUG", default=False)
     parser.add_argument('-rh', '--remote-host', action="store", default='127.0.0.1', help='the hostname or IP address where the service is listening. Default is localhost.')

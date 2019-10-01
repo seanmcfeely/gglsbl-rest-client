@@ -11,9 +11,9 @@ This is a simple python client wrapper for the [gglsbl-rest](https://github.com/
 When installed, a commannd line script named 'gglsbl-rest-client' is supplied that can be used to query your [gglsbl-rest](https://github.com/mlsecproject/gglsbl-rest) service.
 The default configuration file assumes you have the service running on local host. If you do not, the script checks the following locations for config files and overrides previous entries:
 
-    + ``/<local-dir>/etc/config.ini``
-    + ``/etc/gglsbl-rest/config.ini``
-    + ``~/<current-user>/.config/gglsbl-rest.ini``
+- ``/<local-dir>/etc/config.ini``
+- ``/etc/gglsbl-rest/config.ini``
+- ``~/<current-user>/.config/gglsbl-rest.ini``
 
 ```bash
 $ gglsbl-rest-client.py -h
