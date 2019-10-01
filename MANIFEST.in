@@ -1,1 +1,1 @@
-include README.md
+recursive-include gglsbl_rest_client/etc *.ini
