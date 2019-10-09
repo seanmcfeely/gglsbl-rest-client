@@ -24,6 +24,7 @@ def main():
     parser.add_argument('-p', '--port', action='store', default='5000', help='the port the service is listening on. Default: 5000')
     parser.add_argument('-cs', '--check-status', action='store_true', default=False, help='Check the status of the service')
     parser.add_argument('-l','--lookup-url', help='the url to lookup')
+    parser.add_argument('-t', '--timeout', action='store', type=float, default=10, help='How long to wait for a response from the server. Default 10s')
     parser.add_argument('--ignore-proxy', action='store_true', default=True, help='ignore system proxy. On by default.')
     args = parser.parse_args()
 
@@ -37,6 +38,12 @@ def main():
     args.remote_host = config['remote_host'] if args.remote_host is '127.0.0.1' else args.remote_host
     args.port = config['remote_port'] if args.port is '5000' else args.port
     args.ignore_proxy = config.getBoolean('ignore_proxy') if not args.ignore_proxy else args.ignore_proxy
+    try:
+        if 'timeout' in config and config['timeout']:
+            args.timeout = config.getfloat('timeout') if config.getfloat('timeout') > 0 and args.timeout is 10 else args.timeout
+    except ValueError:
+        logger.error("Configured timeout must be a float but got '{}' of type '{}'".format(config['timeout'], type(config['timeout'])))
+        return False
 
     if args.ignore_proxy:
         if 'http_proxy' in os.environ:
@@ -51,7 +58,7 @@ def main():
         sys.exit()
 
     # Create a SafeBrowsing Client & make sure there is a connection
-    sbc = GRS_Client(args.remote_host, args.port)
+    sbc = GRS_Client(hostname=args.remote_host, port=args.port, timeout=args.timeout)
 
     if args.check_status:
         result = sbc.service_status()

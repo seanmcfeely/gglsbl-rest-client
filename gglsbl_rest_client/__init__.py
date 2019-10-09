@@ -12,10 +12,11 @@ class GGLSBL_Rest_Service_Client():
     """
     logger = logging.getLogger(__name__+".GGLSBL_Rest_Service_Client")
 
-    def __init__(self, hostname=None, port=None, ssl=False):
+    def __init__(self, hostname=None, port=None, ssl=False, timeout=10):
         self.server = hostname
         self.port = port
         self.ssl = ssl
+        self.timeout = timeout
         self.lookup_url = None
         self.status_url = None
         if self.server is not None:
@@ -37,8 +38,11 @@ class GGLSBL_Rest_Service_Client():
 
     def _query(self, query):
         try:
-            self._r = requests.get(query, verify=self.ssl)
+            self._r = requests.get(query, verify=self.ssl, timeout=self.timeout)
             return self._r
+        except requests.exceptions.ReadTimeout as e:
+            self.logger.error("ReadTimeout : gglsbl-rest server took longer than {} seconds to respond.".format(self.timeout))
+            return False
         except Exception as e:
             self.logger.error("Problem connecting to service: {}".format(e))
             raise e
@@ -62,6 +66,9 @@ class GGLSBL_Rest_Service_Client():
             self.logger.warn("Provided URL does not appear valid: {}".format(url))
         self.logger.debug("Looking up '{}'".format(url))
         r = self._query(self.lookup_url+self._encode_url(url))
+        if not r:
+            # ReadTimeout occured
+            return False
         self.logger.debug("Got {} response status code from server".format(r.status_code))
         if r.status_code == 200:
             return r.json()

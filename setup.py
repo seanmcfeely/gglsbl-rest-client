@@ -14,7 +14,7 @@ from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
-__version__ = "0.0.2"
+__version__ = "1.0.0"
 description = "This is a simple python client wrapper for the [gglsbl-rest](https://github.com/mlsecproject/gglsbl-rest) service."
 
 here = path.abspath(path.dirname(__file__))
@@ -47,11 +47,7 @@ setup(
 
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        # How mature is this project? Common values are
-        #   3 - Alpha
-        #   4 - Beta
-        #   5 - Production/Stable
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
 
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
