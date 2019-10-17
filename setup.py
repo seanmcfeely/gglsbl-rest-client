@@ -14,7 +14,7 @@ from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 description = "This is a simple python client wrapper for the [gglsbl-rest](https://github.com/mlsecproject/gglsbl-rest) service."
 
 here = path.abspath(path.dirname(__file__))
