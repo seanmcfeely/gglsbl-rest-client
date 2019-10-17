@@ -66,7 +66,7 @@ class GGLSBL_Rest_Service_Client():
             self.logger.warn("Provided URL does not appear valid: {}".format(url))
         self.logger.debug("Looking up '{}'".format(url))
         r = self._query(self.lookup_url+self._encode_url(url))
-        if not r:
+        if r is False:
             # ReadTimeout occured
             return False
         self.logger.debug("Got {} response status code from server".format(r.status_code))
